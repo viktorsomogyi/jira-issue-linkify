@@ -1,0 +1,8 @@
+JIRAfy
+Copyright 2018 Viktor Somogyi-Vass.
+
+This product includes software developed by
+Viktor Somogyi-Vass (http://github.com/viktorsomogyi).
+
+This distribution has a binary dependency on jQuery, which is available under the MIT
+License. The source code of jQuery can be found at https://github.com/jquery/jquery.
