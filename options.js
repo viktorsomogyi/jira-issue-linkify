@@ -68,25 +68,18 @@ $(function() {
 });
 
 function save() {
-  saveDefaultUrl();
-  saveDefaultRegex();
+  saveDefault();
   saveProjectUrls();
 }
 
-function saveDefaultUrl() {
+function saveDefault() {
   var defaultJiraUrl = $('#defaultJiraUrl').val();
-  chrome.storage.sync.set({
-    defaultUrl: defaultJiraUrl
-  }, function() {
-    console.log('Default JIRA URL is ' + defaultJiraUrl);
-  });
-}
-
-function saveDefaultRegex() {
   var defaultRegex = $('#defaultRegex').val();
   chrome.storage.sync.set({
-    defaultRegex: defaultRegex
+    'defaultUrl': defaultJiraUrl,
+    'defaultRegex': defaultRegex
   }, function() {
+    console.log('Default JIRA URL is ' + defaultJiraUrl);
     console.log('Default project regex is ' + defaultRegex);
   });
 }
@@ -99,13 +92,13 @@ function saveProjectUrls() {
     var url = $(this).find('[name=url]').val();
     var regex = $(this).find('[name=regex]').val();
     projectsArray.push({
-      url: url,
-      regex: regex
+      'url': url,
+      'regex': regex
     });
   });
 
   chrome.storage.sync.set({
-    projects: projectsArray
+    'projects': projectsArray
   }, function() {
     console.log('Saved project URLs ' + JSON.stringify(projectsArray));
   });
