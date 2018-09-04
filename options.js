@@ -16,112 +16,97 @@
 
 'use strict';
 
-function loadData() {
+$(function() {
+  var $projectRowTemplate = $(
+    `
+    <div class="field is-horizontal projectRow">
+      <div class="field-label">
+        <label class="label">
+          <button class="button removeProjectRow">remove</button>
+        </label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control is-expanded">
+            <input class="input" type="text" name="url" placeholder="URL" />
+          </p>
+        </div>
+        <div class="field">
+          <p class="control is-expanded">
+            <input class="input" type="text" name="regex" placeholder="Regex" />
+          </p>
+        </div>
+      </div>
+    </div>
+    `
+  );
   chrome.storage.sync.get(['defaultUrl', 'defaultRegex', 'projects'], function(result) {
-    var defaultJiraUrl = document.getElementById('defaultJiraUrl');
-    defaultJiraUrl.value = result.defaultUrl;
-    var defaultRegex = document.getElementById('defaultRegex');
-    defaultRegex.value = result.defaultRegex;
-    if (result.projects !== null && result.projects !== undefined) {
-      var projects = document.getElementById('projects');
-      for (var [k, v] of result.projects) {
-        var row = addRow();
-        row.childNodes[1].value = k;
-        row.childNodes[3].value = v;
+    $('#defaultJiraUrl').val(result.defaultUrl);
+    $('#defaultRegex').val(result.defaultRegex);
+    if ($.isArray(result.projects)) {
+      var $projects = $('#projects').empty();
+      for (let project of result.projects) {
+        let $row = $projectRowTemplate.clone();
+        $row.find('[name=url]').val(project.url);
+        $row.find('[name=regex]').val(project.regex);
+        $projects.append($row);
       }
     }
   });
-}
 
-function addRow() {
-  var row = document.createElement('div');
-  row.className = uuid();
-  var projectLabel = document.createElement('span');
-  projectLabel.textContent = 'Project\'s name:';
-  var project = document.createElement('input');
-  project.type = 'text';
-  var urlLabel = document.createElement('span');
-  urlLabel.textContent = 'Browse URL:';
-  var browseUrl = document.createElement('input');
-  browseUrl.type = 'text';
-  var removeBtn = document.createElement('input');
-  removeBtn.type = 'button';
-  removeBtn.value = 'Remove';
-  removeBtn.addEventListener('click', function() {
-    remove(row);
-  })
-  row.appendChild(projectLabel);
-  row.appendChild(project);
-  row.appendChild(urlLabel);
-  row.appendChild(browseUrl);
-  row.appendChild(removeBtn);
-  var projects = document.getElementById('projects');
-  projects.appendChild(row);
-  return row;
-}
+  $('#addRowButton').click(function() {
+    $projectRowTemplate.clone().appendTo('#projects');
+  });
 
-function remove(rowDiv) {
-  console.log(rowDiv.children[1].value);
-  var parent = rowDiv.parentNode;
-  parent.removeChild(rowDiv);
-  saveProjectUrls();
-}
+  $('#projects').on('click', '.removeProjectRow', function() {
+    $(this).parents('.projectRow').remove();
+  });
 
-function uuid() {
-  var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  var result = "";
-  for (var i = 0; i < 10; ++i) {
-    var rand = Math.floor(Math.random() * chars.length);
-    result = result.concat(chars.charAt(rand));
-  }
-  return result;
-}
+  $('#saveButton').click(function() {
+    save();
+  });
+});
 
 function save() {
-  var projects = document.getElementById('projects');
   saveDefaultUrl();
   saveDefaultRegex();
   saveProjectUrls();
 }
 
 function saveDefaultUrl() {
-  var defaultJiraUrl = document.getElementById('defaultJiraUrl');
-  chrome.storage.sync.set({defaultUrl: defaultJiraUrl.value}, function() {
-    console.log('Default JIRA URL is ' + defaultJiraUrl.value);
+  var defaultJiraUrl = $('#defaultJiraUrl').val();
+  chrome.storage.sync.set({
+    defaultUrl: defaultJiraUrl
+  }, function() {
+    console.log('Default JIRA URL is ' + defaultJiraUrl);
   });
 }
 
 function saveDefaultRegex() {
-  var defaultRegex = document.getElementById('defaultRegex');
-  var fallback = defaultRegex.value;
-  chrome.storage.sync.set({defaultRegex: defaultRegex.value}, function() {
-    console.log('Default project regex is ' + defaultRegex.value);
+  var defaultRegex = $('#defaultRegex').val();
+  chrome.storage.sync.set({
+    defaultRegex: defaultRegex
+  }, function() {
+    console.log('Default project regex is ' + defaultRegex);
   });
 }
 
 function saveProjectUrls() {
-  var projectsDiv = document.getElementById('projects');
-  if (projectsDiv.hasChildNodes()) {
-    var children = projectsDiv.children;
-    var projectsArray = [];
-    for (var i = 0; i < children.length; ++i) {
-      var currentChild = children[i];
-      projectsArray.push([currentChild.children[1].value, currentChild.children[3].value]);
-    }
-  }
-  chrome.storage.sync.set({projects: projectsArray}, function() {
+  var projectsArray = [];
+
+  var $projectRows = $('#projects .projectRow');
+  $projectRows.each(function() {
+    var url = $(this).find('[name=url]').val();
+    var regex = $(this).find('[name=regex]').val();
+    projectsArray.push({
+      url: url,
+      regex: regex
+    });
+  });
+
+  chrome.storage.sync.set({
+    projects: projectsArray
+  }, function() {
     console.log('Saved project URLs ' + JSON.stringify(projectsArray));
   });
 }
-
-var saveBtn = document.getElementById('saveButton');
-saveBtn.addEventListener('click', function() {
-  save();
-});
-
-var addRowBtn = document.getElementById('addRowButton');
-addRowBtn.addEventListener('click', function() {
-  addRow();
-});
-
-loadData();
