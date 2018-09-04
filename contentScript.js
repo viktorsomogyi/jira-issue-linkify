@@ -71,8 +71,8 @@ function loadAndRun(mutationList) {
     var projectNames = [];
     var projectUrls = [];
     result.projects.forEach(function(project) {
-      projectNames.push(new RegExp(project.url, 'g'));
-      projectUrls.push(asLink(project.regex));
+      projectNames.push(new RegExp(project.regex, 'g'));
+      projectUrls.push(asLink(project.url));
     });
     projectNames.push(new RegExp(result.defaultRegex, 'g'));
     projectUrls.push(asLink(result.defaultUrl));
