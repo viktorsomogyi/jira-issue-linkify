@@ -6,3 +6,6 @@ Viktor Somogyi-Vass (http://github.com/viktorsomogyi).
 
 This distribution has a binary dependency on jQuery, which is available under the MIT
 License. The source code of jQuery can be found at https://github.com/jquery/jquery.
+
+Options page is designed via bulma which is available under the MIT
+License. Its website can be found here: https://bulma.io
