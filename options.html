@@ -25,15 +25,29 @@
           <label class="label">Jira URLs and RegExps</label>
         </div>
         <div class="field-body">
-          <div class="field">
-            <p class="control is-expanded">
+          <div class="field has-addons">
+            <div class="control is-expanded">
               <input class="input" type="text" name="jiraUrl" placeholder="URL" id="defaultJiraUrl" />
-            </p>
+            </div>
+            <div class="control">
+              <a class="button">
+                <span class="icon has-text-info">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </a>
+            </div>
           </div>
-          <div class="field">
-            <p class="control is-expanded">
+          <div class="field has-addons">
+            <div class="control is-expanded">
               <input class="input" type="text" name="regex" placeholder="Regex" id="defaultRegex" />
-            </p>
+            </div>
+            <div class="control">
+              <a class="button">
+                <span class="icon has-text-info">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -42,9 +56,14 @@
         <div class="field-label"></div>
         <div class="field-body">
           <div class="field">
-            <p class="control">
-              <button class="button is-primary" id="addRowButton">Add new Jira URL and RegExp</button>
-            </p>
+            <div class="control">
+              <button class="button is-light" id="addRowButton">
+                <span class="icon">
+                  <i class="fas fa-plus"></i>
+                </span>
+                <span>Add new Jira URL and RegExp</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -53,9 +72,9 @@
         <div class="field-label"></div>
         <div class="field-body">
           <div class="field">
-            <p class="control">
+            <div class="control">
               <button class="button is-primary" id="saveButton">Save</button>
-            </p>
+            </div>
           </div>
         </div>
       </div>

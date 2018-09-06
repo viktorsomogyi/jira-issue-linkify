@@ -20,21 +20,39 @@ $(function() {
   var $projectRowTemplate = $(
     `
     <div class="field is-horizontal projectRow">
-      <div class="field-label">
+      <div class="field-label is-normal">
         <label class="label">
-          <button class="button removeProjectRow">remove</button>
+          <button class="button is-small removeProjectRow">
+            <span class="icon has-text-grey">
+              <i class="fas fa-trash"></i>
+            </span>
+          </button>
         </label>
       </div>
       <div class="field-body">
-        <div class="field">
-          <p class="control is-expanded">
+        <div class="field has-addons">
+          <div class="control is-expanded">
             <input class="input" type="text" name="url" placeholder="URL" />
-          </p>
+          </div>
+          <div class="control">
+            <a class="button">
+              <span class="icon has-text-info">
+                <i class="fas fa-info-circle"></i>
+              </span>
+            </a>
+          </div>
         </div>
-        <div class="field">
-          <p class="control is-expanded">
+        <div class="field has-addons">
+          <div class="control is-expanded">
             <input class="input" type="text" name="regex" placeholder="Regex" />
-          </p>
+          </div>
+          <div class="control">
+            <a class="button">
+              <span class="icon has-text-info">
+                <i class="fas fa-info-circle"></i>
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
