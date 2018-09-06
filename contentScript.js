@@ -16,84 +16,92 @@
 
 'use strict';
 
-var jQ = $.noConflict(true);
+// when config changes
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  loadAndRun();
+});
 
-// function to decide whether a parent tag will have its text replaced or not
-function isTagOk(node) {
-    var tagsWhitelist = ['A', 'PRE', 'BLOCKQUOTE', 'CODE', 'INPUT', 'BUTTON', 'TEXTAREA'];
-    var tag = node.parentNode.tagName;
-    var pptag = node.parentNode.parentNode.tagName;
-    return "DEL" !== tag && tagsWhitelist.indexOf(pptag) === -1 && tagsWhitelist.indexOf(tag) === -1;
+// when html changes
+new MutationObserver(loadAndRun)
+  .observe(
+    document.body, {
+      childList: true,
+      subtree: true
+    }
+  );
+
+// first time
+loadAndRun();
+
+function loadAndRun(mutationList) {
+  chrome.storage.sync.get(['defaultUrl', 'defaultRegex', 'projects'], function(result) {
+    var projectConfigs = [];
+    result.projects.forEach(function(project) {
+      projectConfigs.push(createProjectConfig(project.url, project.regex));
+    });
+    projectConfigs.push(createProjectConfig(result.defaultUrl, result.defaultRegex));
+
+    if (mutationList === undefined) {
+      scanReplaceTextInNode(document.body, projectConfigs);
+    } else {
+      scanReplaceText(mutationList, projectConfigs);
+    }
+  });
 }
 
-function scanReplaceText(mutationList, projectNames, projectUrls) {
+function createProjectConfig(url, regex) {
+  return {
+    url: asLink(url),
+    regex: new RegExp(regex, 'g')
+  };
+}
+
+function asLink(url) {
+  return `<a href="${url}$&" target="_blank" jirafied>$&</a>`;
+}
+
+function scanReplaceText(mutationList, projectConfigs) {
   if (mutationList === null || mutationList === undefined) {
     return;
   }
   Array.from(mutationList).forEach(function(element) {
     Array.from(element.addedNodes).forEach(function(addedNode) {
-      scanReplaceTextInNode(addedNode, projectNames, projectUrls);
+      scanReplaceTextInNode(addedNode, projectConfigs);
     });
   });
 }
 
-function scanReplaceTextInNode(node, projectNames, projectUrls) {
-  var texts = document.evaluate('.//text()[ normalize-space(.) != "" ]', node, null, 6, null);
-  var text;
-  for (var i = 0; text = texts.snapshotItem(i); i += 1) {
-    if ( isTagOk(text) ) {
-      projectNames.forEach(function (value, index) {
-        var data = text.data;
-        var htmlNodes = jQ.parseHTML(data.replace( value, projectUrls[index] ));
-        var parent = text.parentNode
-        if (parent !== null || parent !== undefined) {
-          for (var k = 0; k < htmlNodes.length; k++) {
-            if (htmlNodes[k].nodeName === "A") {
-              for (var j = 0; j < htmlNodes.length; j++) {
-                jQ(parent).append(htmlNodes[j]);
-              }
-              parent.removeChild(text);
-              break;
-            }
+function scanReplaceTextInNode(node, projectConfigs) {
+  var $texts = $('*', node)
+    .contents()
+    .filter(function() {
+      return this.nodeType === Node.TEXT_NODE &&
+        $.trim(this.data) != "" &&
+        containsPattern(this.data, projectConfigs) &&
+        notJirafied(this);
+    }).each(function() {
+      for (let config of projectConfigs) {
+        if (config.regex.test(this.data)) {
+          var nodes = $.parseHTML(this.data.replace(config.regex, config.url));
+          for (let node of nodes) {
+            this.before(node);
           }
+          this.remove();
+          break;
         }
-      });
+      }
+    });
+}
+
+function notJirafied(node) {
+  return !(node.parentNode && node.parentNode.hasAttribute('jirafied'));
+}
+
+function containsPattern(text, projectConfigs) {
+  for (let config of projectConfigs) {
+    if (config.regex.test(text)) {
+      return true;
     }
   }
+  return false;
 }
-
-function asLink(url) {
-  return "<a href=\""+url+"$&\" target=\"_blank\">$&</a>";
-}
-
-function loadAndRun(mutationList) {
-  chrome.storage.sync.get(['defaultUrl', 'defaultRegex', 'projects'], function(result) {
-    var projectNames = [];
-    var projectUrls = [];
-    result.projects.forEach(function(project) {
-      projectNames.push(new RegExp(project.regex, 'g'));
-      projectUrls.push(asLink(project.url));
-    });
-    projectNames.push(new RegExp(result.defaultRegex, 'g'));
-    projectUrls.push(asLink(result.defaultUrl));
-
-    if (mutationList === document) {
-      scanReplaceTextInNode(document, projectNames, projectUrls);
-    } else {
-      scanReplaceText(mutationList, projectNames, projectUrls);
-    }
-  });
-}
-
-chrome.storage.onChanged.addListener(function(changes, namespace) {
-  loadAndRun(null);
-});
-
-var config = { childList: true, subtree: true };
-var observer = new MutationObserver(loadAndRun);
-var documentElements = document.getElementsByTagName('body');
-for (var i = 0; i < documentElements.length; ++i) {
-  observer.observe(documentElements[i], config);
-}
-
-loadAndRun(document);
