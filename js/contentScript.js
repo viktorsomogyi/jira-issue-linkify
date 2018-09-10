@@ -97,7 +97,9 @@ function scanReplaceTextInNode(node, projectConfigs) {
 }
 
 function allowedParentNodeName(node) {
-  return node.parentNode && node.parentNode.nodeName.indexOf("SCRIPT") == -1;
+  return node.parentNode
+    && node.parentNode.tagName !== "SCRIPT"
+    && node.parentNode.tagName !== "A";
 }
 
 function notJirafied(node) {
