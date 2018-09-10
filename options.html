@@ -3,8 +3,9 @@
 
 <head>
   <title>Jirafy Settings</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"/>
-  <link rel="stylesheet" type="text/css" href="css/bulma.min.css" media="all"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous" />
+  <link rel="stylesheet" type="text/css" href="css/bulma.min.css" media="all" />
   <link rel="stylesheet" type="text/css" href="css/tooltipster.bundle.min.css" />
   <link rel="stylesheet" type="text/css" href="css/tooltipster-sideTip-light.min.css" />
 
@@ -34,63 +35,63 @@
             <div class="control is-expanded">
               <input class="input" type="text" name="jiraUrl" placeholder="URL" id="defaultJiraUrl" />
             </div>
-              <div class="control">
-                <a class="button" title="You can specify an URL where you want your links point to.">
-                  <span class="icon has-text-info">
-                    <i class="fas fa-info-circle"></i>
-                  </span>
-                </a>
-              </div>
-            </div>
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input class="input" type="text" name="regex" placeholder="Regex" id="defaultRegex" />
-              </div>
-              <div class="control">
-                <a class="button" title="This is a regular expression which decides whether a text should be transformed to a link or not.">
-                  <span class="icon has-text-info">
-                    <i class="fas fa-info-circle"></i>
-                  </span>
-                </a>
-              </div>
-              </div>
+            <div class="control">
+              <a class="button" title="You can specify an URL where you want your links point to.">
+                <span class="icon has-text-info">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </a>
             </div>
           </div>
-          <p id="projects"></p>
-          <div class="field is-horizontal">
-            <div class="field-label"></div>
-            <div class="field-body">
-              <div class="field has-addons">
-                <div class="control">
-                  <button class="button is-light" id="addRowButton">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-plus"></i>
-                    </span>
-                    <span>Add new Jira URL and RegExp</span>
-                  </button>
-                </div>
-                <div class="control">
-                  <a class="button" title="Similarly to the default URL and regex you can add more JIRA URLs and link matcher regexes. This is particularly useful if you regularly use multiple JIRAs. Note that these matchers will be applied from top to down, so in any case a matcher matches then the ones below won't be applied. The default will be matched last as that is the ultimate fallback.">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-info-circle"></i>
-                    </span>
-                  </a>
-                </div>
-              </div>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input class="input" type="text" name="regex" placeholder="Regex" id="defaultRegex" />
             </div>
-          </div>
-          <hr class="hr" />
-          <div class="field is-horizontal">
-            <div class="field-label"></div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <button class="button is-primary" id="saveButton">Save</button>
-                </div>
-              </div>
+            <div class="control">
+              <a class="button" title="This is a regular expression which decides whether a text should be transformed to a link or not.">
+                <span class="icon has-text-info">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </a>
             </div>
           </div>
         </div>
+      </div>
+      <p id="projects"></p>
+      <div class="field is-horizontal">
+        <div class="field-label"></div>
+        <div class="field-body">
+          <div class="field has-addons">
+            <div class="control">
+              <button class="button is-light" id="addRowButton">
+                <span class="icon has-text-info">
+                  <i class="fas fa-plus"></i>
+                </span>
+                <span>Add new Jira URL and RegExp</span>
+              </button>
+            </div>
+            <div class="control">
+              <a class="button" title="Similarly to the default URL and regex you can add more JIRA URLs and link matcher regexes. This is particularly useful if you regularly use multiple JIRAs. Note that these matchers will be applied from top to down, so in any case a matcher matches then the ones below won't be applied. The default will be matched last as that is the ultimate fallback.">
+                <span class="icon has-text-info">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="hr" />
+      <div class="field is-horizontal">
+        <div class="field-label"></div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <button class="button is-primary" id="saveButton">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </body>
 
