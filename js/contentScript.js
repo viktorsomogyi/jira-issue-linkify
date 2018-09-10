@@ -80,6 +80,7 @@ function scanReplaceTextInNode(node, projectConfigs) {
       return this.nodeType === Node.TEXT_NODE &&
         $.trim(this.data) != "" &&
         containsPattern(this.data, projectConfigs) &&
+        allowedParentNodeName(this) &&
         notJirafied(this);
     }).each(function() {
       for (let config of projectConfigs) {
@@ -93,6 +94,10 @@ function scanReplaceTextInNode(node, projectConfigs) {
         }
       }
     });
+}
+
+function allowedParentNodeName(node) {
+  return node.parentNode && node.parentNode.nodeName.indexOf("SCRIPT") == -1;
 }
 
 function notJirafied(node) {
