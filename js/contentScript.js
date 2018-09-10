@@ -16,6 +16,8 @@
 
 'use strict';
 
+var JIRAFIED = 'jirafied';
+
 // when config changes
 chrome.storage.onChanged.addListener(function(changes, namespace) {
   loadAndRun();
@@ -57,7 +59,7 @@ function createProjectConfig(url, regex) {
 }
 
 function asLink(url) {
-  return `<a href="${url}$&" target="_blank" jirafied>$&</a>`;
+  return `<a href="${url}$&" target="_blank" ${JIRAFIED}>$&</a>`;
 }
 
 function scanReplaceText(mutationList, projectConfigs) {
@@ -94,7 +96,7 @@ function scanReplaceTextInNode(node, projectConfigs) {
 }
 
 function notJirafied(node) {
-  return !(node.parentNode && node.parentNode.hasAttribute('jirafied'));
+  return !(node.parentNode && node.parentNode.hasAttribute(JIRAFIED));
 }
 
 function containsPattern(text, projectConfigs) {
