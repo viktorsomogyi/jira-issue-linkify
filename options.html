@@ -2,9 +2,15 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="bulma.min.css" media="all">
-  <script src="jquery-1.11.1.js"></script>
-  <script src="options.js"></script>
+  <title>Jirafy Settings</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"/>
+  <link rel="stylesheet" type="text/css" href="css/bulma.min.css" media="all"/>
+  <link rel="stylesheet" type="text/css" href="css/tooltipster.bundle.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/tooltipster-sideTip-light.min.css" />
+
+  <script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+  <script type="text/javascript" src="js/tooltipster.bundle.min.js"></script>
+  <script type="text/javascript" src="js/options.js"></script>
 </head>
 
 <body>
@@ -24,41 +30,60 @@
           <label class="label">Jira URLs and RegExps</label>
         </div>
         <div class="field-body">
-          <div class="field">
-            <p class="control is-expanded">
+          <div class="field has-addons">
+            <div class="control is-expanded">
               <input class="input" type="text" name="jiraUrl" placeholder="URL" id="defaultJiraUrl" />
-            </p>
+            </div>
+              <div class="control">
+                <a class="button" title="Help text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-info-circle"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input class="input" type="text" name="regex" placeholder="Regex" id="defaultRegex" />
+              </div>
+              <div class="control">
+                <a class="button" title="Help text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.">
+                  <span class="icon has-text-info">
+                    <i class="fas fa-info-circle"></i>
+                  </span>
+                </a>
+              </div>
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <p class="control is-expanded">
-              <input class="input" type="text" name="regex" placeholder="Regex" id="defaultRegex" />
-            </p>
+          <p id="projects"></p>
+          <div class="field is-horizontal">
+            <div class="field-label"></div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <button class="button is-light" id="addRowButton">
+                    <span class="icon">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                    <span>Add new Jira URL and RegExp</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr class="hr" />
+          <div class="field is-horizontal">
+            <div class="field-label"></div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <button class="button is-primary" id="saveButton">Save</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <p id="projects"></p>
-      <div class="field is-horizontal">
-        <div class="field-label"></div>
-        <div class="field-body">
-          <div class="field">
-            <p class="control">
-              <button class="button is-primary" id="addRowButton">Add new Jira URL and RegExp</button>
-            </p>
-          </div>
-        </div>
-      </div>
-      <hr class="hr" />
-      <div class="field is-horizontal">
-        <div class="field-label"></div>
-        <div class="field-body">
-          <div class="field">
-            <p class="control">
-              <button class="button is-primary" id="saveButton">Save</button>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
 </body>
 

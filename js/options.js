@@ -17,24 +17,33 @@
 'use strict';
 
 $(function() {
+  $("[title]").tooltipster({
+    theme: 'tooltipster-light',
+    maxWidth: 300
+  });
+
   var $projectRowTemplate = $(
     `
     <div class="field is-horizontal projectRow">
-      <div class="field-label">
+      <div class="field-label is-normal">
         <label class="label">
-          <button class="button removeProjectRow">remove</button>
+          <button class="button is-small removeProjectRow">
+            <span class="icon has-text-grey">
+              <i class="fas fa-trash"></i>
+            </span>
+          </button>
         </label>
       </div>
       <div class="field-body">
         <div class="field">
-          <p class="control is-expanded">
+          <div class="control is-expanded">
             <input class="input" type="text" name="url" placeholder="URL" />
-          </p>
+          </div>
         </div>
         <div class="field">
-          <p class="control is-expanded">
+          <div class="control is-expanded">
             <input class="input" type="text" name="regex" placeholder="Regex" />
-          </p>
+          </div>
         </div>
       </div>
     </div>
