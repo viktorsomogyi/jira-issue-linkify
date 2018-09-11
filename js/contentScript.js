@@ -99,6 +99,7 @@ function scanReplaceTextInNode(node, projectConfigs) {
 function allowedParentNodeName(node) {
   return node.parentNode
     && node.parentNode.tagName !== "SCRIPT"
+    && node.parentNode.tagName !== "NOSCRIPT"
     && node.parentNode.tagName !== "A";
 }
 
