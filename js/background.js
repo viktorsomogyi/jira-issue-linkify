@@ -17,11 +17,21 @@
 'use strict';
 
 chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({
-    defaultUrl: 'https://issues.apache.org/jira/browse/',
-    defaultRegex: '[A-Z]{2,20}-\\d{1,7}'
-  }, function() {
-    console.log('Setting initial JIRA URL');
-    console.log('Setting initial regex');
+  chrome.storage.sync.get(['defaultUrl', 'defaultRegex', 'projects'], function(result) {
+    if (result.defaultUrl === undefined || result.defaultUrl === null) {
+      chrome.storage.sync.set({defaultUrl: 'https://issues.apache.org/jira/browse/'}, function() {
+        console.log('Setting initial JIRA URL')
+      });
+    }
+    if (result.defaultRegex === undefined || result.defaultRegex === null) {
+      chrome.storage.sync.set({defaultRegex: '[A-Z]{2,20}-\\d{1,7}'}, function() {
+        console.log('Setting initial regex')
+      });
+    }
+    if (result.projects === undefined || result.projects === null) {
+      chrome.storage.sync.set({projects: []}, function() {
+        console.log('Setting initial empty project list')
+      });
+    }
   });
 });
