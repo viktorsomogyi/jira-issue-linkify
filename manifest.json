@@ -1,6 +1,6 @@
 {
   "name": "JIRAfy",
-  "version": "0.1",
+  "version": "1.0.0",
   "description": "Scans the web and linkifies JIRA issues",
   "permissions": ["activeTab", "declarativeContent", "storage"],
   "options_page": "options.html",

@@ -1,0 +1,17 @@
+apply plugin: 'base'
+
+task distribution(type: Zip) {
+  build.dependsOn(distribution)
+
+  archiveName = "jirafy-${version}.zip"
+  destinationDir = file("${buildDir}/dist")
+  from "${buildDir}/toArchive"
+}
+
+task copyToBuild(type: Copy) {
+  distribution.dependsOn(copyToBuild)
+  from(".") {
+    exclude "README.md", "build.gradle", "gradle.properties", "build/", ".gradle", ".git"
+  }
+  into("${buildDir}/toArchive")
+}
