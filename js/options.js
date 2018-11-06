@@ -49,16 +49,54 @@ $(function() {
     </div>
     `
   );
-  chrome.storage.sync.get(['defaultUrl', 'defaultRegex', 'projects'], function(result) {
+  var $excludedTemplate = $(
+    `
+    <div class="field is-horizontal exclusion">
+      <div class="field-label is-normal">
+        <label class="label">
+          <button class="button is-small removeExclusion">
+            <span class="icon has-text-grey">
+              <i class="fas fa-trash"></i>
+            </span>
+          </button>
+        </label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control is-expanded">
+            <input class="input" type="text" name="url" placeholder="URL" />
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+  );
+  chrome.storage.sync.get(['defaultUrl', 'defaultRegex', 'projects', 'exclusions'], function(result) {
     $('#defaultJiraUrl').val(result.defaultUrl);
     $('#defaultRegex').val(result.defaultRegex);
     if ($.isArray(result.projects)) {
-      var $projects = $('#projects').empty();
+      let $projects = $('#projects').empty();
       for (let project of result.projects) {
         let $row = $projectRowTemplate.clone();
         $row.find('[name=url]').val(project.url);
         $row.find('[name=regex]').val(project.regex);
         $projects.append($row);
+      }
+    }
+    if ($.isArray(result.exclusions)) {
+      let $exclusions = $('#exclusions');
+      $exclusions.find('.exclusion').remove();
+      let first = true;
+      for (let exclusion of result.exclusions) {
+        if (first) {
+            $('#firstExclusion').val(exclusion);
+            first = false;
+        }
+        else {
+          let $exclusion = $excludedTemplate.clone();
+          $exclusion.find('[name=url]').val(exclusion);
+          $exclusions.append($exclusion);
+        }
       }
     }
   });
@@ -71,6 +109,14 @@ $(function() {
     $(this).parents('.projectRow').remove();
   });
 
+  $('#addExclusionButton').click(function() {
+      $excludedTemplate.clone().appendTo('#exclusions');
+  });
+
+  $('#exclusions').on('click', '.removeExclusion', function() {
+    $(this).parents('.exclusion').remove();
+  });
+
   $('#saveButton').click(function() {
     save();
   });
@@ -79,6 +125,7 @@ $(function() {
 function save() {
   saveDefault();
   saveProjectUrls();
+  saveExclusions();
 }
 
 function saveDefault() {
@@ -110,5 +157,22 @@ function saveProjectUrls() {
     'projects': projectsArray
   }, function() {
     console.log('Saved project URLs ' + JSON.stringify(projectsArray));
+  });
+}
+
+function saveExclusions() {
+  let exclusionsArray = [];
+
+  $('#exclusions [name=url]').each(function() {
+      let value = $(this).val();
+      if (value.trim() !== "") {
+          exclusionsArray.push(value);
+      }
+  });
+
+  chrome.storage.sync.set({
+      'exclusions': exclusionsArray
+  }, function() {
+      console.log('Saved exclusions URLs ' + JSON.stringify(exclusionsArray));
   });
 }

@@ -36,7 +36,14 @@ new MutationObserver(loadAndRun)
 loadAndRun();
 
 function loadAndRun(mutationList) {
-  chrome.storage.sync.get(['defaultUrl', 'defaultRegex', 'projects'], function(result) {
+  chrome.storage.sync.get(['defaultUrl', 'defaultRegex', 'projects', 'exclusions'], function(result) {
+    if ($.isArray(result.exclusions)) {
+        for (let exclusion of result.exclusions) {
+          if (window.location.href.indexOf(exclusion) !== -1) {
+            return;
+          }
+        }
+    }
     var projectConfigs = [];
     result.projects.forEach(function(project) {
       projectConfigs.push(createProjectConfig(project.url, project.regex));
@@ -74,11 +81,11 @@ function scanReplaceText(mutationList, projectConfigs) {
 }
 
 function scanReplaceTextInNode(node, projectConfigs) {
-  var $texts = $('*', node)
+  $('*', node)
     .contents()
     .filter(function() {
       return this.nodeType === Node.TEXT_NODE &&
-        $.trim(this.data) != "" &&
+        $.trim(this.data) !== "" &&
         containsPattern(this.data, projectConfigs) &&
         allowedParentNodeName(this) &&
         notJirafied(this);
@@ -97,7 +104,7 @@ function scanReplaceTextInNode(node, projectConfigs) {
 }
 
 function allowedParentNodeName(node) {
-  return $(node).parents('a,script,noscript,textarea').length == 0;
+  return $(node).parents('a,script,noscript,textarea').length === 0;
 }
 
 function notJirafied(node) {
