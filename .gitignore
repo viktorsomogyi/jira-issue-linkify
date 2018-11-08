@@ -1,2 +1,7 @@
 build/
 .gradle/
+gradle/
+.idea/
+jirafy.iml
+gradlew
+gradlew.bat

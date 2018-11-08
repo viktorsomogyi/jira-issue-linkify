@@ -71,7 +71,46 @@
               </button>
             </div>
             <div class="control">
-              <a class="button" title="Similarly to the default URL and regex you can add more JIRA URLs and link matcher regexes. This is particularly useful if you regularly use multiple JIRAs. Note that these matchers will be applied from top to down, so in any case a matcher matches then the ones below won't be applied. The default will be matched last as that is the ultimate fallback.">
+              <a class="button is-light"
+                 title="Similarly to the default URL and regex you can add more JIRA URLs and link matcher regexes. This is particularly useful if you regularly use multiple JIRAs. Note that these matchers will be applied from top to down, so in any case a matcher matches then the ones below won't be applied. The default will be matched last as that is the ultimate fallback.">
+                <span class="icon has-text-info">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="hr"/>
+      <div id="exclusions">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Site URLs to exclude</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control is-expanded">
+                <input class="input" type="text" name="url" placeholder="URL" id="firstExclusion"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p></p>
+      <div class="field is-horizontal">
+        <div class="field-label"></div>
+        <div class="field-body">
+          <div class="field has-addons">
+            <div class="control">
+              <button class="button is-light" id="addExclusionButton">
+                <span class="icon has-text-info">
+                  <i class="fas fa-plus"></i>
+                </span>
+                <span>Add new URL to exclude</span>
+              </button>
+            </div>
+            <div class="control">
+              <a class="button is-light" title="You can specify an URL or part of an URL where you DON'T want to replace jira links.">
                 <span class="icon has-text-info">
                   <i class="fas fa-info-circle"></i>
                 </span>
