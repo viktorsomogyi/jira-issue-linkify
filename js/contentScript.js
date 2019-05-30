@@ -104,7 +104,7 @@ function scanReplaceTextInNode(node, projectConfigs) {
 }
 
 function allowedParentNodeName(node) {
-  return $(node).parents('a,script,noscript,textarea').length === 0;
+  return $(node).parents('a,script,noscript,textarea,svg,[role=dialog]').length === 0;
 }
 
 function notJirafied(node) {
