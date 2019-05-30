@@ -61,6 +61,7 @@ function loadAndRun(mutationList) {
 function createProjectConfig(url, regex) {
   return {
     url: asLink(url),
+    wrappedRegex: new RegExp(`(^|\\s+)${regex}($|\s+)`, 'g'),
     regex: new RegExp(regex, 'g')
   };
 }
@@ -91,7 +92,7 @@ function scanReplaceTextInNode(node, projectConfigs) {
         notJirafied(this);
     }).each(function() {
       for (let config of projectConfigs) {
-        if (config.regex.test(this.data)) {
+        if (config.wrappedRegex.test(this.data)) {
           var nodes = $.parseHTML(this.data.replace(config.regex, config.url));
           for (let node of nodes) {
             this.before(node);
@@ -113,7 +114,7 @@ function notJirafied(node) {
 
 function containsPattern(text, projectConfigs) {
   for (let config of projectConfigs) {
-    if (config.regex.test(text)) {
+    if (config.wrappedRegex.test(text)) {
       return true;
     }
   }
