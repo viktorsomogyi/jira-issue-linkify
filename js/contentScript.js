@@ -61,7 +61,7 @@ function loadAndRun(mutationList) {
 function createProjectConfig(url, regex) {
   return {
     url: asLink(url),
-    wrappedRegex: new RegExp(`(^|\\s+|[(])${regex}($|\s+|[,.:;)])`),
+    wrappedRegex: new RegExp(`(^|\\s+|[(])${regex}($|\\s+|[,.:;)]($|\\s+))`),
     regex: new RegExp(regex, 'g')
   };
 }
