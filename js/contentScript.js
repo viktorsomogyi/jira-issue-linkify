@@ -16,7 +16,7 @@
 
 'use strict';
 
-var JIRAFIED = 'jirafied';
+let JIRAFIED = 'jirafied';
 
 // when config changes
 chrome.storage.onChanged.addListener(function(changes, namespace) {
@@ -44,7 +44,7 @@ function loadAndRun(mutationList) {
           }
         }
     }
-    var projectConfigs = [];
+    let projectConfigs = [];
     result.projects.forEach(function(project) {
       projectConfigs.push(createProjectConfig(project.url, project.regex));
     });
@@ -61,6 +61,7 @@ function loadAndRun(mutationList) {
 function createProjectConfig(url, regex) {
   return {
     url: asLink(url),
+    wrappedRegex: new RegExp(`(^|\\s+|[(])${regex}($|\\s+|[,.:;)]($|\\s+))`),
     regex: new RegExp(regex, 'g')
   };
 }
@@ -91,8 +92,8 @@ function scanReplaceTextInNode(node, projectConfigs) {
         notJirafied(this);
     }).each(function() {
       for (let config of projectConfigs) {
-        if (config.regex.test(this.data)) {
-          var nodes = $.parseHTML(this.data.replace(config.regex, config.url));
+        if (config.wrappedRegex.test(this.data)) {
+          let nodes = $.parseHTML(this.data.replace(config.regex, config.url));
           for (let node of nodes) {
             this.before(node);
           }
@@ -104,7 +105,7 @@ function scanReplaceTextInNode(node, projectConfigs) {
 }
 
 function allowedParentNodeName(node) {
-  return $(node).parents('a,script,noscript,textarea').length === 0;
+  return $(node).parents('a,script,noscript,textarea,svg,[role=dialog]').length === 0;
 }
 
 function notJirafied(node) {
@@ -113,7 +114,7 @@ function notJirafied(node) {
 
 function containsPattern(text, projectConfigs) {
   for (let config of projectConfigs) {
-    if (config.regex.test(text)) {
+    if (config.wrappedRegex.test(text)) {
       return true;
     }
   }
